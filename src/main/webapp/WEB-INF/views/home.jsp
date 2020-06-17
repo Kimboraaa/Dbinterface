@@ -18,6 +18,52 @@ tr, th, td {
 	<h1>Hello world!</h1>
 
 	<P>The time on the server is ${serverTime}.</P>
+	<div class="col-md">
+					<!-- general form elements disabled -->
+					<div class="card card-warning">
+						<div class="card-header">
+							<h3 class="card-title">회원가입</h3>
+						</div>
+						<!-- /.card-header -->
+						<div class="card-body">
+							<form role="form" action="/admin/member/create" method="post">
+								<div class="row">
+									<div class="col-sm-6">
+										<!-- text input -->
+										<div class="form-group">
+											<label>아이디</label> <input name="userid" type="text" class="form-control"
+												placeholder="Enter ...">
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label>암호</label> <input name="userpw" type="text" class="form-control"
+												placeholder="Enter ...">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<!-- textarea -->
+										<div class="form-group">
+											<label>이름</label> <input name="username" type="text" class="form-control"
+												placeholder="Enter ...">
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label>이메일</label> <input name="email" type="text" class="form-control"
+												placeholder="Enter ...">
+										</div>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-block btn-default btn-sm">회원등록</button>
+						</div>
+						</form>
+						<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+				</div>
 	<table class="bbsListTbl" summary="번호,제목,조회수,작성일 등을 제공하는 표">
 		<caption class="hdd">회원정보 목록:제작자-${jspMaker}</caption>
 		<thead>
@@ -29,6 +75,7 @@ tr, th, td {
 				<th scope="col">사용자이메일</th>
 				<th scope="col">사용자등록일</th>
 				<th scope="col">사용자수정일</th>
+				<th scope="col">삭제</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -42,9 +89,18 @@ tr, th, td {
 					<td>${memberVO.email}</td>
 					<td>${memberVO.regdate}</td>
 					<td>${memberVO.updatedate}</td>
-				</tr>
+					<td>
+					<form action="/admin/member/delete" method="post">
+					<input type="text" value="${memberVO.userid}" name="userid">
+					<input type="submit" value="삭제">
+					</form>
+					</td>
+					</tr>
 			</c:forEach>
 		</tbody>
 	</table>
+
+
+				
 </body>
 </html>

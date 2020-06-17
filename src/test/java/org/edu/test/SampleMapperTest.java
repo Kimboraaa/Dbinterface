@@ -6,13 +6,17 @@ import java.util.Random;
 import javax.inject.Inject;
 
 import org.edu.dao.IF_SampleDAO;
+import org.edu.service.IF_SampleService;
+import org.edu.service.SampleServiceImpl;
 import org.edu.vo.MemberVO;
 // import org.edu.dao.SampleSelectProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+@WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations ={"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
 public class SampleMapperTest {
@@ -40,28 +44,31 @@ public class SampleMapperTest {
 	private IF_SampleDAO mapper;//인터페이스를 mapper 실행가능하게 mapper변수로 지정.
 	//클래스 실행변수로 사용시=>IF_SampleMapper mapper = new IF_SampleMapper();
 	
+	@Inject
+	private IF_SampleService sampleService;
+	
 	@Test
-	public void testInsertMember() {
+	public void testInsertMember() throws Exception {
 		/*int vRandom = 0;
 		Random ran = new Random();
 		vRandom = ran.nextInt();*/
 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
 		String today= formatter.format(new java.util.Date());
-		testSelectMember();
-		System.out.println("위쪽은 입력 전 리스트 입니다.");
+		//testSelectMember();
+		//System.out.println("위쪽은 입력 전 리스트 입니다.");
 		MemberVO vo = new MemberVO();
 		vo.setUserid("user_" + today);
 		vo.setUserpw("1234");
 		vo.setUsername("각시탈");
 		vo.setEmail("user10@test.com");
-		mapper.insertMember(vo);
-		System.out.println("입력 후 리스트 입니다.");
-		testSelectMember();
+		sampleService.insertMember(vo);
+		//System.out.println("입력 후 리스트 입니다.");
+		//testSelectMember();
 	}
 	@Test
 	public void testSelectMember() {
 		List<MemberVO> list = mapper.selectMember();
-		int cnt = 1;
+		/*int cnt = 1;
 		for(MemberVO vo:list) {
 			System.out.println(
 					"번호: " + cnt++ + "번 " +
@@ -70,13 +77,13 @@ public class SampleMapperTest {
 					" 이름: " + vo.getUsername() +
 					" 이메일: " + vo.getEmail()
 					);
-		}
+		}*/
 	}
 	
 	@Test
 	public void testUpdateMember() {
-		testSelectMember();
-		System.out.println("위에서 수정 전 이름을 확인하세요.");
+		//testSelectMember();
+		//System.out.println("위에서 수정 전 이름을 확인하세요.");
 		
 		MemberVO vo = new MemberVO();
 		//수정은 여러개의 변수값을 변경하기 때문에 MemberVO클래스 변수를 매개변수로 사용한다.
@@ -86,16 +93,16 @@ public class SampleMapperTest {
 		vo.setEmail("abc@abc.com");
 		mapper.updateMember(vo);
 		
-		System.out.println("아래는 수정 후 이름을 확인하세요.");
-		testSelectMember();
+		//System.out.println("아래는 수정 후 이름을 확인하세요.");
+		//testSelectMember();
 	}
 	
 	@Test
 	public void testDeleteMember() {
-		testSelectMember();
+		//testSelectMember();
 		mapper.deleteMember("user2");
-		System.out.println("아래는 지운 후 회원리스트");
-		testSelectMember();
+		//System.out.println("아래는 지운 후 회원리스트");
+		//testSelectMember();
 	}
 	
 	//DB연동방식1
@@ -104,33 +111,33 @@ public class SampleMapperTest {
 	public void testUserId(){
 		// System.out.println(mapper.getClass().getName()); //디버그용
 		String userid = mapper.getUserId("kimilguk");
-		System.out.println("결과1[사용자이름에 해당하는 아이디확인] getUserId() : " + userid);
+		//System.out.println("결과1[사용자이름에 해당하는 아이디확인] getUserId() : " + userid);
 	}	
 	//DB연동방식2	
 	// interface 로 단순쿼리 Mysql서버 시간출력.(dB연결 확인 용)
 	@Test
 	public void testTime(){
 		// System.out.println("mapper.getClass().getName() : " + mapper.getClass().getName());
-		System.out.println("결과2[db접속시간확인] getTime() : " + mapper.getTime());
+		//System.out.println("결과2[db접속시간확인] getTime() : " + mapper.getTime());
 	}
 	
 	//DB연동방식3
 	// interface 쿼리로 Mysql서버 member테이블 에서 사용자 이름출력. 
 	@Test 
 	public void testUname(){
-		System.out.println("mapper.getClass().getName() : " + mapper.getClass().getName());
+		//System.out.println("mapper.getClass().getName() : " + mapper.getClass().getName());
 		String uname = mapper.getUname("user2", "1234");
-		System.out.println("결과3[아이디/암호로 검색결과 확인] getUname() : " + uname);
+		//System.out.println("결과3[아이디/암호로 검색결과 확인] getUname() : " + uname);
 	}
 	
 	//DB연동방식4
 	// interface 쿼리로 Mysql서버의 member테이블 에서 사용자 ID검색 후 검색된 이름출력 단, Mapper 외부 java클래스 사용. 
 	@Test
 	public void testSearchUname(){
-		System.out.println(mapper.getClass().getName());
+		//System.out.println(mapper.getClass().getName());
 		String keyword = "user2";
 		String uname = mapper.searchUname("userid",keyword);
-		System.out.println("결과4[mapper외부쿼리로 아이로검색한 사용자이름확인] searchUname() : " + uname);
+		//System.out.println("결과4[mapper외부쿼리로 아이로검색한 사용자이름확인] searchUname() : " + uname);
 	}
 	
 
